@@ -1,10 +1,16 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import * as mariadb from 'mariadb';
 
 const prismaClientSingleton = () => {
   const connectionString = process.env.DATABASE_URL || 'mysql://root@127.0.0.1:3306/Erpit_db';
 
-  const adapter = new PrismaMariaDb(connectionString);
+  if (!connectionString.startsWith('mysql://') && !connectionString.startsWith('mariadb://')) {
+    return new PrismaClient(); // Fallback if no valid MariaDB string
+  }
+
+  const pool = mariadb.createPool(connectionString);
+  const adapter = new PrismaMariaDb(pool as any);
   return new PrismaClient({ adapter });
 };
 

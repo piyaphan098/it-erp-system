@@ -31,20 +31,25 @@ export async function GET(request: Request) {
 
     // OS CHECK: Nmap OS detection (-O) requires Administrator / root privileges.
     // Without it, node-nmap throws an uncaught exception trying to parse text as XML.
+    let isAdmin = true;
     if (process.platform === "win32") {
       try {
         await execAsync("net session");
       } catch (adminError) {
-        return NextResponse.json({ 
-          success: false, 
-          error: "Nmap OS Scan requires Administrator privileges on Windows. Please restart VS Code / Terminal as Administrator." 
-        }, { status: 500 });
+        isAdmin = false;
+        console.warn("User is not Administrator. Falling back to non-admin Nmap scan.");
       }
     }
 
-    // Using OsAndPortScan which provides openPorts and osNmap
     const results = await new Promise<any[]>((resolve, reject) => {
-      const scan = new nmap.OsAndPortScan(range);
+      // If we are admin, we can use OsAndPortScan
+      // Otherwise fallback to basic NmapScan which doesn't require admin
+      let scan;
+      if (isAdmin) {
+        scan = new nmap.OsAndPortScan(range);
+      } else {
+        scan = new nmap.NmapScan(range, '-sT -F'); // fallback basic connect scan
+      }
       
       scan.on('complete', (data: any[]) => {
         resolve(data || []);

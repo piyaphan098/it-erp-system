@@ -43,21 +43,27 @@ export async function GET(request: Request) {
       }, { status: 500 });
     }
 
-    // Windows Admin Check (required for -sS and -O)
+    // Check for Administrator privileges on Windows
+    let isAdmin = true;
     if (process.platform === "win32") {
       try {
         await execAsync("net session");
       } catch (adminError) {
-        return NextResponse.json({ 
-          success: false, 
-          error: "Optimized Nmap Scan (-sS/-O) requires Administrator privileges on Windows. Please restart VS Code / Terminal as Administrator." 
-        }, { status: 500 });
+        isAdmin = false;
+        console.warn("User is not Administrator. Falling back to non-admin Nmap scan.");
       }
     }
 
-    // Run optimized scan with specific ports, aggressive timing, and OS detection
-    // Added 3389 to -p because of Windows PC classification logic
-    const customArgs = '-sS -p 22,80,443,139,445,3389,9100,515,631 --open -T4 -O';
+    // Run optimized scan with specific ports and aggressive timing
+    // If not admin, we cannot use -sS (SYN scan) and -O (OS detection)
+    let customArgs = '';
+    const ports = '22,80,443,139,445,3389,9100,515,631';
+    
+    if (isAdmin) {
+      customArgs = `-sS -p ${ports} --open -T4 -O`;
+    } else {
+      customArgs = `-sT -p ${ports} --open -T4`;
+    }
     
     const results = await new Promise<any[]>((resolve, reject) => {
       const scan = new nmap.NmapScan(range, customArgs);

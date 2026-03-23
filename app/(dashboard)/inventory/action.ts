@@ -26,8 +26,8 @@ export async function addInventoryItem(formData: FormData) {
 
     revalidatePath("/inventory");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: error instanceof Error ? error.message : "An unknown error occurred" };
   }
 }
 
@@ -64,8 +64,8 @@ export async function addStock(formData: FormData) {
     revalidatePath("/inventory");
     revalidatePath("/inventory/transactions");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: error instanceof Error ? error.message : "An unknown error occurred" };
   }
 }
 
@@ -113,7 +113,7 @@ export async function issueItem(formData: FormData) {
     revalidatePath("/inventory");
     revalidatePath("/inventory/transactions");
     return { success: true };
-  } catch (error: any) {
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    return { success: false, error: error instanceof Error ? error.message : "An unknown error occurred" };
   }
 }

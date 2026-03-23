@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
-import { user_role } from "@prisma/client";
+type user_role = "ADMIN" | "IT_SUPPORT" | "USER";
 import bcrypt from "bcrypt";
 
 export async function updateUserRole(userId: string, formData: FormData) {

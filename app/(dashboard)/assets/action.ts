@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { asset_status } from "@prisma/client";
+type asset_status = "AVAILABLE" | "IN_USE" | "MAINTENANCE";
 
 export async function createAsset(formData: FormData) {
   const session = await getServerSession(authOptions);

@@ -5,7 +5,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ticket_priority, ticket_status } from "@prisma/client";
+type ticket_priority = "LOW" | "MEDIUM" | "HIGH";
+type ticket_status = "OPEN" | "IN_PROGRESS" | "RESOLVED";
 
 export async function createTicket(formData: FormData) {
   const session = await getServerSession(authOptions);

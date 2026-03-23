@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model asset {
+  id           String       @id @default(cuid())
+  name         String
+  serialNumber String       @unique(map: "Asset_serialNumber_key")
+  status       asset_status @default(AVAILABLE)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  assignedToId String?
+  assignedTo   user?        @relation("AssetAssignedTo", fields: [assignedToId], references: [id])
+
+  @@index([assignedToId], map: "Asset_assignedToId_fkey")
+}
+
+model ticket {
+  id           String          @id @default(cuid())
+  title        String
+  description  String
+  priority     ticket_priority @default(LOW)
+  status       ticket_status   @default(OPEN)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  createdById  String
+  createdBy    user            @relation("TicketCreatedBy", fields: [createdById], references: [id])
+  assignedToId String?
+  assignedTo   user?           @relation("TicketAssignedTo", fields: [assignedToId], references: [id])
+
+  @@index([assignedToId], map: "Ticket_assignedToId_fkey")
+  @@index([createdById], map: "Ticket_createdById_fkey")
+}
+
+model user {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String    @unique(map: "User_email_key")
+  password  String
+  role            user_role @default(USER)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  assetsAssigned  asset[]   @relation("AssetAssignedTo")
+  ticketsCreated        ticket[]                @relation("TicketCreatedBy")
+  ticketsAssigned       ticket[]                @relation("TicketAssignedTo")
+  inventoryTransactions inventory_transaction[] @relation("TransactionCreatedBy")
+}
+
+enum asset_status {
+  AVAILABLE
+  IN_USE
+  MAINTENANCE
+}
+
+enum ticket_priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ticket_status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum user_role {
+  ADMIN
+  IT_SUPPORT
+  USER
+}
+
+model inventory_item {
+  id           String                  @id @default(uuid()) @map("item_id")
+  name         String                  @map("item_name")
+  category     String
+  brand        String?
+  unit         String?
+  quantity     Int                     @default(0)
+  minQuantity  Int                     @default(0) @map("min_quantity")
+  location     String?
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  transactions inventory_transaction[]
+}
+
+model inventory_transaction {
+  id              String         @id @default(uuid())
+  inventoryItemId String
+  item            inventory_item @relation(fields: [inventoryItemId], references: [id])
+  type            String
+  quantity        Int
+  reason          String?
+  requestedBy     String?
+  relatedAssetId  String?
+  relatedTicketId String?
+  createdById     String
+  createdBy       user           @relation("TransactionCreatedBy", fields: [createdById], references: [id])
+  createdAt       DateTime       @default(now())
+
+  @@index([inventoryItemId])
+  @@index([createdById])
+}

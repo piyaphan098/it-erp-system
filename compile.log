@@ -1,0 +1,27 @@
+﻿app/(dashboard)/assets/action.ts(8,10): error TS2724: '"@prisma/client"' has no exported member named 'AssetStatus'. Did you mean 'asset_status'?
+app/(dashboard)/assets/action.ts(22,5): error TS2322: Type '{ name: string; serialNumber: string; status: AssetStatus; assignedToId: string | null; }' is not assignable to type '(Without<assetCreateInput, assetUncheckedCreateInput> & assetUncheckedCreateInput) | (Without<...> & assetCreateInput)'.
+  Type '{ name: string; serialNumber: string; status: AssetStatus; assignedToId: string | null; }' is not assignable to type 'Without<assetUncheckedCreateInput, assetCreateInput> & assetCreateInput'.
+    Type '{ name: string; serialNumber: string; status: AssetStatus; assignedToId: string | null; }' is missing the following properties from type 'assetCreateInput': id, updatedAt
+app/(dashboard)/assets/page.tsx(36,5): error TS2322: Type '{ assignedTo: true; }' is not assignable to type 'never'.
+app/(dashboard)/assets/page.tsx(141,61): error TS2339: Property 'name' does not exist on type 'never'.
+app/(dashboard)/assets/page.tsx(141,86): error TS2339: Property 'email' does not exist on type 'never'.
+app/(dashboard)/page.tsx(104,5): error TS2322: Type '{ createdBy: true; assignedTo: true; }' is not assignable to type 'never'.
+app/(dashboard)/page.tsx(120,40): error TS2339: Property 'name' does not exist on type 'never'.
+app/(dashboard)/page.tsx(120,65): error TS2339: Property 'email' does not exist on type 'never'.
+app/(dashboard)/tickets/action.ts(8,10): error TS2305: Module '"@prisma/client"' has no exported member 'Priority'.
+app/(dashboard)/tickets/action.ts(8,20): error TS2305: Module '"@prisma/client"' has no exported member 'Status'.
+app/(dashboard)/tickets/action.ts(19,5): error TS2322: Type '{ title: string; description: string; priority: Priority; status: "OPEN"; createdById: string; }' is not assignable to type '(Without<ticketCreateInput, ticketUncheckedCreateInput> & ticketUncheckedCreateInput) | (Without<...> & ticketCreateInput)'.
+  Type '{ title: string; description: string; priority: Priority; status: "OPEN"; createdById: string; }' is not assignable to type 'Without<ticketUncheckedCreateInput, ticketCreateInput> & ticketCreateInput'.
+    Type '{ title: string; description: string; priority: Priority; status: "OPEN"; createdById: string; }' is missing the following properties from type 'ticketCreateInput': id, updatedAt
+app/(dashboard)/tickets/page.tsx(28,5): error TS2322: Type '{ createdBy: true; assignedTo: true; }' is not assignable to type 'never'.
+app/(dashboard)/tickets/page.tsx(132,41): error TS2339: Property 'name' does not exist on type 'never'.
+app/(dashboard)/tickets/page.tsx(132,66): error TS2339: Property 'email' does not exist on type 'never'.
+app/(dashboard)/tickets/page.tsx(135,63): error TS2339: Property 'name' does not exist on type 'never'.
+app/(dashboard)/tickets/page.tsx(135,89): error TS2339: Property 'email' does not exist on type 'never'.
+app/(dashboard)/users/action.ts(7,10): error TS2305: Module '"@prisma/client"' has no exported member 'Role'.
+app/(dashboard)/users/action.ts(63,5): error TS2322: Type '{ name: string; email: string; password: string; role: Role; }' is not assignable to type '(Without<userCreateInput, userUncheckedCreateInput> & userUncheckedCreateInput) | (Without<...> & userCreateInput)'.
+  Type '{ name: string; email: string; password: string; role: Role; }' is not assignable to type 'Without<userUncheckedCreateInput, userCreateInput> & userCreateInput'.
+    Type '{ name: string; email: string; password: string; role: Role; }' is missing the following properties from type 'userCreateInput': id, updatedAt
+app/register/action.ts(39,7): error TS2322: Type '{ name: string; email: string; password: string; role: "USER"; }' is not assignable to type '(Without<userCreateInput, userUncheckedCreateInput> & userUncheckedCreateInput) | (Without<...> & userCreateInput)'.
+  Type '{ name: string; email: string; password: string; role: "USER"; }' is not assignable to type 'Without<userUncheckedCreateInput, userCreateInput> & userCreateInput'.
+    Type '{ name: string; email: string; password: string; role: "USER"; }' is missing the following properties from type 'userCreateInput': id, updatedAt

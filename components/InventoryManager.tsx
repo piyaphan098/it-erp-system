@@ -31,7 +31,7 @@ export default function InventoryManager({ items, isAdminOrSupport }: { items: a
     if (result.success) {
       setShowAddItem(false);
     } else {
-      setError(result.error);
+      setError(result.error || "Failed to add item");
     }
   };
 
@@ -45,7 +45,7 @@ export default function InventoryManager({ items, isAdminOrSupport }: { items: a
     if (result.success) {
       setStockInModal(null);
     } else {
-      setError(result.error);
+      setError(result.error || "Failed to add stock");
     }
   };
 
@@ -59,7 +59,7 @@ export default function InventoryManager({ items, isAdminOrSupport }: { items: a
     if (result.success) {
       setStockOutModal(null);
     } else {
-      setError(result.error);
+      setError(result.error || "Failed to issue item");
     }
   };
 
